@@ -1,0 +1,5 @@
+---
+role_znc_puid: '1000'
+role_znc_pgid: '1000'
+role_znc_tz: 'Europe/Zurich'
+role_znc_dir: '/opt/app-znc'

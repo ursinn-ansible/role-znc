@@ -1,0 +1,54 @@
+---
+- name: set vars
+  set_fact:
+    docker_image: lscr.io/linuxserver/znc
+    docker_container: znc
+    docker_puid: '{{ role_znc_puid }}'
+    docker_pgid: '{{ role_znc_pgid }}'
+    docker_tz: '{{ role_znc_tz }}'
+    docker_dir: '{{ role_znc_dir }}/config'
+
+- name: Create directory
+  ansible.builtin.file:
+    path: '{{docker_dir}}'
+    state: directory
+    owner: '{{ docker_puid }}'
+    group: '{{ docker_pgid }}'
+    mode: 0755
+
+- name: Ensure image is pulled
+  community.docker.docker_image:
+    name: "{{ docker_image }}"
+    source: pull
+    force_source: yes
+  register: pulled
+
+- name: Remove container
+  community.docker.docker_container:
+    name: "{{ docker_container }}"
+    state: absent
+  when: pulled.changed
+
+- name: Get infos on container
+  community.docker.docker_container_info:
+    name: "{{ docker_container }}"
+  register: result
+
+- name: Create znc container
+  community.docker.docker_container:
+    image: '{{ docker_image }}'
+    volumes:
+     - '{{ docker_dir }}:/config:Z'
+    env:
+      PUID: '{{ docker_puid }}'
+      PGID: '{{ docker_pgid }}'
+      TZ: '{{ docker_tz }}'
+    ports:
+      - 6501:6501
+    name: "{{ docker_container }}"
+    restart_policy: unless-stopped
+    state: started
+  when: 
+    pulled.changed
+    or
+    result.exists == false
