@@ -7,6 +7,7 @@
     docker_pgid: '{{ role_znc_pgid }}'
     docker_tz: '{{ role_znc_tz }}'
     docker_dir: '{{ role_znc_dir }}/config'
+    docker_network: '{{ role_znc_network }}'
 
 - name: Create directory
   ansible.builtin.file:
@@ -43,9 +44,9 @@
       PUID: '{{ docker_puid }}'
       PGID: '{{ docker_pgid }}'
       TZ: '{{ docker_tz }}'
-    ports:
-      - 6501:6501
     name: "{{ docker_container }}"
+    networks:
+     - name: "{{ docker_network }}"
     restart_policy: unless-stopped
     state: started
   when: 
