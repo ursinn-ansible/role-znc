@@ -1,8 +1,8 @@
 ---
 - name: set vars
   set_fact:
-    docker_image: lscr.io/linuxserver/znc
-    docker_container: znc
+    docker_image: '{{ role_znc_image }}'
+    docker_container: '{{ role_znc_container }}'
     docker_puid: '{{ role_znc_puid }}'
     docker_pgid: '{{ role_znc_pgid }}'
     docker_tz: '{{ role_znc_tz }}'

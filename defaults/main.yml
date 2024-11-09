@@ -1,4 +1,6 @@
 ---
+role_znc_image: 'lscr.io/linuxserver/znc'
+role_znc_container: 'znc'
 role_znc_puid: '1000'
 role_znc_pgid: '1000'
 role_znc_tz: 'Europe/Zurich'
