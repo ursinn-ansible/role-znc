@@ -15,6 +15,7 @@ Docker Image: https://docs.linuxserver.io/images/docker-znc
 | role_znc_pgid | 1000 |
 | role_znc_tz | Europe/Zurich |
 | role_znc_dir | /opt/app-znc |
+| role_znc_network | app-network |
 
 ## License
 
